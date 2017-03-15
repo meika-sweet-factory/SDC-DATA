@@ -6,6 +6,25 @@ const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const config = require('../config.js');
 const router = express.Router();
+const mongoElasticsearch = require('mongo-elasticsearch');
+
+var t = new mongoElasticsearch.Transfer({
+  esOpts: {
+    host: 'database-search',
+    log: 'trace'
+  },
+  esTargetType: 'entreprise',
+  esTargetIndex: 'bot',
+  mongoUri: config.mongo.database,
+  mongoSourceCollection: 'sirene'
+});
+ 
+t.start().then(function(results) {
+  console.log('Exiting');
+  console.log(results);
+  process.exit();
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
 

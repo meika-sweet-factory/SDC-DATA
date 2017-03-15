@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { AppRoute } from './app.route';
 import { AppConfig } from './app.config';
 
-import { } from './app.index.components';
+import { HomeComponent } from './app.index.components';
 import { } from './app.index.services';
 import { } from './app.index.models';
 
