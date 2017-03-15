@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  client:
+    build: client
+    ports:
+      - "4200:4200"
+
+  server:
+    build: server
+    ports:
+      - "3000:3000"
+    links:
+      - database
+
+  database:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  database-search:
+    image: 'elasticsearch'
+    command: 'elasticsearch -Des.discovery.zen.minimum_master_nodes=2 -Des.cluster.name=my_app_es_1 -Des.discovery.zen.ping.unicast.hosts=elasticsearch-1:9300,elasticsearch-2:9300,elasticsearch-3:9300 -Des.network.publish_host=_ethwe:ipv4_ -Des.network.bind_host=0'
+    environment:
+      - ES_HEAP_SIZE=4g
+    ports:
+      - '9200:9200'
