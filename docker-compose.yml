@@ -1,16 +1,8 @@
 version: '3'
 
 services:
-  web-client:
-    build: web-client
-    ports:
-      - "4200:4200"
-    restart: always
-    volumes:
-      - ./volumes/web-client:/home
-
-  web-server:
-    build: web-server
+  main-server:
+    build: server
     ports:
       - "3000:3000"
     restart: always
