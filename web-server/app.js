@@ -9,6 +9,25 @@ const index = require('./routes/index');
 
 const app = express();
 
+// Mongo
+var mongoElasticsearch = require('mongo-elasticsearch');
+var t = new mongoElasticsearch.Transfer({
+  esOpts: {
+    host: 'databasesearch:9200',
+    log: 'trace'
+  },
+  esTargetType: 'entreprise',
+  esTargetIndex: 'sirene',
+  mongoUri: 'mongodb://database:9200/bot',
+  mongoSourceCollection: 'sirene'
+});
+
+t.start().then(function(results) {
+  console.log('Exiting');
+  console.log(results);
+  process.exit();
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
