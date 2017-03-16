@@ -1,2 +1,2 @@
-server/node_modules/
-volumes/
+server/node_modules
+volumes
