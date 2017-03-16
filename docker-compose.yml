@@ -10,9 +10,6 @@ services:
     build: server
     ports:
       - "3000:3000"
-    links:
-      - "database:database"
-      - "database-search:database-search"
 
   database:
     image: mongo
@@ -23,5 +20,3 @@ services:
     image: 'elasticsearch'
     ports:
       - "9200:9200"
-    links:
-      - "database:database"
