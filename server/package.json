@@ -21,6 +21,7 @@
     "mongodb-core": "^2.1.8",
     "mongoose": "^4.9.0",
     "morgan": "^1.8.1",
+    "mysql": "^2.13.0",
     "path": "^0.12.7",
     "request": "^2.81.0",
     "serve-favicon": "~2.3.2"
