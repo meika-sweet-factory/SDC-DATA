@@ -5,24 +5,27 @@ const request = require("request");
 const cheerio = require("cheerio");
 
 router.get('/api/:company/:sirene', function(req, res, next) {
-    let json = { };
-    let target = {
+    var json = { };
+
+    // BEGIN
+    console.log(req.params.company + req.params.sirene + ':');
+
+    // STEP 01  SOCIETE
+    request(target = {
 	encoding: null,
 	method: 'GET',
 	uri: 'http://www.societe.com/societe/' + req.params.company + '-' + req.params.sirene + '.html'
-    };
-
-    var soulsociety = function( target, callback ) {
-	request(target, (error, response, html) => {
-	let $ = cheerio.load(iconv.decode(new Buffer(html), 'ISO-8859-1'));
-	let getInfo = function(classTarget, index) {
-	    return $($(classTarget)[index]).text();
-	};
-	
+    }, (error, response, html) => {
 	if (!error) {
-	    let src1 = "#rensjur td";
-	    let src2 = "#rensjurcomplete td";
-	    json = {
+	    const $ = cheerio.load(iconv.decode(new Buffer(html), 'ISO-8859-1'));
+	    const getInfo = function(classTarget, index) {
+		return $($(classTarget)[index]).text();
+	    };
+	    const src = "#entreprise div:nth-child(6) div:nth-child(2) div:nth-child(1) td";
+	    const src1 = "#rensjur td";
+	    const src2 = "#rensjurcomplete td";
+	    let data = {};
+	    data = {
 		siret: getInfo(src1, 9),
 		result: {
 		    name: getInfo(src1, 1),
@@ -49,34 +52,33 @@ router.get('/api/:company/:sirene', function(req, res, next) {
 		},
 		updateDate: getInfo(src1, 19).substring(0,8)
 	    };
-	    console.log(req.params.company + req.params.sirene + ':');
-	    console.log(json);
-	    if (callback) callback(json);
-	
-	
+	    console.log(data);
+	    Object.assign(json, data);
 	}
-	});
-    }
-    soulsociety( target, function(json) {
-	target2 = {
-	    encoding: null,
-	    method: 'GET',
-	    uri: 'https://www.score3.fr/' + req.params.company + '-' + req.params.sirene + '.shtml'
-	};
-	
-	request(target2, (error, response, html) => {
-	    let $ = cheerio.load(iconv.decode(new Buffer(html), 'ISO-8859-1'));
-	    let getInfo = function(classTarget, index) {
+    });
+
+    // STEP 02 SCORE3
+    request({
+	encoding: null,
+	method: 'GET',
+	uri: 'https://www.score3.fr/' + req.params.company + '-' + req.params.sirene + '.shtml'
+    }, (error, response, html) => {
+	if(!error) {
+	    const $ = cheerio.load(iconv.decode(new Buffer(html), 'ISO-8859-1'));
+	    const getInfo = function(classTarget, index) {
 		return $($(classTarget)[index]).text();
 	    };
-	    if(!error) {
-		let src = "#entreprise div:nth-child(6) div:nth-child(2) div:nth-child(1) td";
-		console.log(getInfo(src, 8));
-		console.log(getInfo(src, 9));
-		res.setHeader('Content-Type', 'application/json');
-		res.send(JSON.stringify(json));
+	    const src = "#entreprise div:nth-child(6) div:nth-child(2) div:nth-child(1) td";
+	    let data = {};
+	    data = {
+		head: getInfo(src, 8),
+		head2: getInfo(src, 9)
 	    }
-	});
+	    console.log(data);
+	    Object.assign(json, data);
+	}
     });
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(json));
 });
 module.exports = router;

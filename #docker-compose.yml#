@@ -10,13 +10,16 @@ services:
       - ./volumes/web-server:/home
 
   database-server:
-    image: mysql:latest
+    image: mysql
     ports:
       - "3306:3306"
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sirene
     volumes:
-      - ./docker/data:/docker-entrypoint-initdb.d
+      - ./volumes/database-server:/var/lib/mysql
+      - ./resources/docker-sql/:/docker-entrypoint-initdb.d
 
   database-search-engine:
     image: 'elasticsearch'
