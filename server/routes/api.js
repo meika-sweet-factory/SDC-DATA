@@ -4,6 +4,7 @@ const router = express.Router();
 const aspirator = require("../middlewares/aspirator.js");
 
 router.get('/api/:company/:sirene', function(req, res, next) {
+    console.log("Api open");
     Promise.all([
 	aspirator.societe({
 	    source: 'http://www.societe.com/societe/' + req.params.company + '-' + req.params.sirene + '.html',

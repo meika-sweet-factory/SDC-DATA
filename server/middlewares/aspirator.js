@@ -34,8 +34,8 @@ module.exports = {
 		},
 		naf: {
 		    date: as(b, 29),
-		    Code: as(b, 21),
-		    Activity: as(b, 23)
+		    code: as(b, 21),
+		    activity: as(b, 23)
 		}
 	    };
 	    console.log('Scrap: Societe - END');
