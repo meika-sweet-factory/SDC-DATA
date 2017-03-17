@@ -4,24 +4,28 @@ services:
   main-server:
     build: server
     ports:
-      - "3000:3000"
+      - "80:80"
     restart: always
-    volumes:
-      - ./volumes/web-server:/home
 
   database-server:
-    image: mysql:latest
+    image: mysql
+    build: database
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - ./docker/data:/docker-entrypoint-initdb.d
-
-  database-search-engine:
-    image: 'elasticsearch'
-    ports:
-      - "9200:9200"
     restart: always
-    volumes:
-      - ./volumes/database-search-engine:/home
+
+# Mongo project aborted
+
+#  database-server
+#    image: mongo
+#    ports:
+#      - "27017:27017"
+#    restart: always
+
+#  database-search-engine:
+#    image: elasticsearch
+#    ports:
+#      - "9200:9200"
+#    restart: always
