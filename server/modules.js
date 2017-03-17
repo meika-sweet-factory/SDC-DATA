@@ -14,7 +14,7 @@ module.exports = function(app) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
 
-    // Elasticsearch rich
+    // Elasticsearch enrichment
     /*
     let tunnel = new mongoElasticsearch.Transfer({
 	esOpts: {

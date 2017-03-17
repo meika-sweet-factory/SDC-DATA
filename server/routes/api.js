@@ -4,14 +4,13 @@ const cheerio = require('cheerio');
 const async = require('async');
 const iconv = require('iconv-lite');
 const mysql = require('../middlewares/mysql.js');
-const gogle = require('../middlewares/gogle.js');
 const router = express.Router();
 
 router.get('/_search', function(req, res, next) {
 //    mysql.connect();
 //    mysql.query('SELECT siren FROM etna WHERE siren = ' + req.query['sirene'] + ' OR siret = ' + req.query['sirene'] , function(err, rows, fields) {
-//	if (!err) {
-	    async.parallel({
+//    	if (!err && rows[0].siren) {
+          async.parallel({
 		societe: function (callback) {
 		    setTimeout(() => request({
 			encoding: null,
@@ -55,7 +54,7 @@ router.get('/_search', function(req, res, next) {
 		    setTimeout(() => request({
 			encoding: null,
 			method: 'GET',
-			uri: 'https://www.score3.fr/' + req.query['company'].toUpperCase() + '-' + req.query['sirene'] + '.shtml'
+			uri: 'https://www.score3.fr/' + req.query['company'].toUpperCase + '-' + req.query['sirene'] + '.shtml'
 		    }, (error, response, html) => {
 			let data = { };
 			if(!error) {
@@ -76,9 +75,10 @@ router.get('/_search', function(req, res, next) {
 	    }, (error, results) => {
 		res.json(Object.assign(results.societe, results.score3));
 	    });
-//	} else
-//	    console.log(err);
-//    });
+			 	} else
+			 	    console.log(err);
+					let json = { error: "No entry in database"}		
+			     });
 //    mysql.end();
 });
 module.exports = router;
