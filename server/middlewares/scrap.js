@@ -11,28 +11,22 @@ const hlp = {
     sql: qry => 'SELECT siren FROM etna WHERE siren = ' + qry['siren'],
     opt: (qry, tgt) => {
 	var out = { }
-	if(qry)
-	    mysql.sql(hlp.sql(qry), rows => {
-		if(rows)
-		    google.query(rows[0].siren + ' ' + tgt, (lnk) => {
-			if(lnk)
-			    out = {
-				encoding: null,
-				method: 'GET',
-				uri: lnk,
-				timeout: 10000,
-				headers: {
-				    'User-Agent': 'request'
-				}
-			    }
-			else
-			    console.log("BOT: can't connect to google")
-		    })
-		else
-		    console.log("BOT: no element correspond to the request")
+	console.log(qry)
+	if(qry) mysql.sql(hlp.sql(qry), rows => {
+	    console.log(rows)
+	    if(rows) google.query(rows[0].siren + ' ' + tgt, (lnk) => {
+		if(lnk) out = {
+		    encoding: null,
+		    method: 'GET',
+		    uri: lnk,
+		    timeout: 10000,
+		    headers: {
+			'User-Agent': 'request'
+		    }
+		}
+		console.log(out)
 	    })
-	else
-	    console.log("BOT: no query entry")
+	})
 	return out
     },
     asp: (tgt, bdy, cbk) => {
