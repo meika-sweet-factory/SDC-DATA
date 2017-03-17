@@ -1,6 +1,9 @@
-const cheerio = require('cheerio')
-const iconv = require('iconv-lite')
-const request = require('request')
+const cheerio = require('cheerio'),
+      iconv = require('iconv-lite'),
+      request = require('request'),
+      cachedRequest = require('cached-request')(request)
+
+cachedRequest.setCacheDirectory("../cache");
 
 const hlp = {
     opt: tgt => {
@@ -8,6 +11,7 @@ const hlp = {
 	    encoding: null,
 	    method: 'GET',
 	    uri: tgt,
+	    timeout: 10000,
 	    headers: {
 		'User-Agent': 'request'
 	    }
@@ -21,7 +25,7 @@ const hlp = {
 }
 
 module.exports = {
-    societe: (qry, cbk) => request(hlp.opt('http://www.societe.com/societe/' + qry['company'] + '-' + qry['sirene'] + '.html'), (err, res, bdy) => {
+    societe: (qry, cbk) => cachedRequest(hlp.opt('http://www.societe.com/societe/' + qry['company'] + '-' + qry['sirene'] + '.html'), (err, res, bdy) => {
 	var data = {}
 	if(!err && res.statusCode == 200)
 	    hlp.asp([
@@ -49,7 +53,7 @@ module.exports = {
 	    })
 	cbk(data)
     }),
-    score3: (qry, cbk) => request(hlp.opt('https://www.score3.fr/' + qry['company'].toUpperCase + '-' + qry['sirene'] + '.shtml'), (err, res, bdy) => {
+    score3: (qry, cbk) => cachedRequest(hlp.opt('https://www.score3.fr/' + qry['company'].toUpperCase + '-' + qry['sirene'] + '.shtml'), (err, res, bdy) => {
 	var data = {}
 	if(!err && res.statusCode == 200)
 	    hlp.asp([

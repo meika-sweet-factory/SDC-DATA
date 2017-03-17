@@ -1,9 +1,8 @@
-const express = require('express')
-const path = require('path')
-const app = express()
-
-const modules = require("./modules")
-const routes = require("./routes")
+const express = require('express'),
+      path = require('path'),
+      modules = require("./modules"),
+      routes = require("./routes"),
+      app = express()
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')

@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "body-parser": "~1.16.0",
+    "cached-request": "^1.1.0",
     "cheerio": "^0.22.0",
     "debug": "~2.6.0",
     "ejs": "^2.5.6",
@@ -14,10 +15,8 @@
     "express": "~4.14.1",
     "fs": "0.0.1-security",
     "google": "^2.1.0",
-    "iconv": "^2.2.1",
     "iconv-lite": "^0.4.15",
     "jade": "^1.11.0",
-    "kerberos": "0.0.23",
     "mongo-elasticsearch": "^1.0.0",
     "mongodb-core": "^2.1.8",
     "mongoose": "^4.9.0",

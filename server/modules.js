@@ -1,20 +1,15 @@
-const logger = require('morgan');
-const favicon = require('serve-favicon');
-const bodyParser = require('body-parser');
-const mongoElasticsearch = require('mongo-elasticsearch');
+const logger = require('morgan'),
+      favicon = require('serve-favicon'),
+      bodyParser = require('body-parser'),
+      mongoElasticsearch = require('mongo-elasticsearch')
 
 module.exports = function(app) {
-    // Basic
-    //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-
-    // Debugger
-    app.use(logger('dev'));
-
-    // Parser
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
-
-    // Elasticsearch enrichment
+    //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+    app.use(logger('dev'))
+    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({
+	extended: false
+    }))
     /*
     let tunnel = new mongoElasticsearch.Transfer({
 	esOpts: {
