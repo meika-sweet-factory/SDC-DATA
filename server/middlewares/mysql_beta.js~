@@ -1,0 +1,12 @@
+const mysql = require('mysql')
+
+const MODULE = { }
+
+MODULE.init(query, callback){
+    mysql.connect()
+    mysql.query(query, (err, rows, fields) => {
+	callback();
+    })
+    mysql.end()
+}
+module.exports = MODULE

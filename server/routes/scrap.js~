@@ -1,0 +1,54 @@
+const cheerio = require('cheerio')
+const iconv = require('iconv-lite')
+const request = require('request')
+
+const hlp = {
+    opt: (tgt) => {
+	return {
+	    encoding: null,
+	    method: 'GET',
+	    uri: tgt
+	}
+    },
+    asp: (tgt, bdy, cbk) => {
+	var $ = cheerio.load(iconv.decode(new Buffer(bdy), 'ISO-8859-1'))
+	var clt = (tgt, idx) => {
+	    return $($(tgt)[idx]).text()
+	}
+	cbk(tgt, clt)
+    }
+}
+
+module.exports = {
+    societe: (req) => request(hlp.opt('http://www.societe.com/societe/' + req.query['company'] + '-' + req.query['sirene'] + '.html'), (error, respond, body) => {
+	var data = { }
+	if(!error){
+	    hlp.asp([
+		'#rensjur td',
+		'#rensjurcomplete td'
+	    ], body, (target, collect) => {
+		data = {
+		    siret: collect(target[0], 9),
+		    name: collect(target[0], 1) + collect(target[1], 9),
+		    legalForm: collect(target[0], 15),
+		    category: collect(target[1], 19),
+		    capital: collect(target[0], 23),
+		    address: collect(target[0], 3).replace(/\n\s+/g, ""),
+		    companyCreated: collect(target[1], 31),
+		    seatCreated: collect(target[1], 33),
+		    rcs: {
+			date: collect(target[1], 17).substring(0,8),
+			address: collect(target[1], 11),
+		    },
+		    naf: {
+			date: collect(target[1], 29),
+			code: collect(target[1], 21),
+			activity: collect(target[1], 23)
+		    },
+		    employeNumber: collect(target[0], 21)
+		}
+	    })
+	}
+	return data;
+    })
+}

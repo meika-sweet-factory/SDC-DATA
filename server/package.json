@@ -14,6 +14,7 @@
     "express": "~4.14.1",
     "fs": "0.0.1-security",
     "google": "^2.1.0",
+    "iconv": "^2.2.1",
     "iconv-lite": "^0.4.15",
     "jade": "^1.11.0",
     "kerberos": "0.0.23",
