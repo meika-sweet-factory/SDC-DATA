@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  main-server:
+    build: server
+    ports:
+      - "80:80"
+    restart: always
+
+  database-server:
+    image: mysql
+    build: database
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+
+# Mongo project aborted
+
+#  database-server
+#    image: mongo
+#    ports:
+#      - "27017:27017"
+#    restart: always
+
+#  database-search-engine:
+#    image: elasticsearch
+#    ports:
+#      - "9200:9200"
+#    restart: always
